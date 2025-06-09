@@ -37,14 +37,6 @@ FUNCTIONS = [
         "checkpoints": 4
     },
     {
-        "name": "Polinomial",
-        "formula": "f(x) = -0.01x⁴ + 0.2x³ - x² + 5x + 200",
-        "f": lambda x: -0.01*x**4 + 0.2*x**3 - x**2 + 5*x + 200,
-        "df": lambda x: -0.04*x**3 + 0.6*x**2 - 2*x + 5,
-        "range": (0, 1000),
-        "checkpoints": 5
-    },
-    {
         "name": "Logística",
         "formula": "f(x) = 400 / (1 + e^(-0.01(x - 500)))",
         "f": lambda x: 400 / (1 + math.exp(-0.01*(x - 500))),
@@ -231,10 +223,11 @@ while True:
         input_bg = pygame.Rect(WIDTH//2 - 160, HEIGHT - 70, 320, 40)
         pygame.draw.rect(screen, (240, 240, 240), input_bg, border_radius=5)
         pygame.draw.rect(screen, BLUE, input_bg, 2, border_radius=5)
-        prompt = font.render(f"Derivada em x ≈ {int(game.next_checkpoint)}:", True, BLACK)
-        screen.blit(prompt, (WIDTH//2 - 150, HEIGHT - 60))
+        prompt = font.render(f"Derivada em x ≈ {int(game.next_checkpoint)}:", True, (100, 100, 100))
+        screen.blit(prompt, (WIDTH//2 - 150, HEIGHT - 120))  # sobe o prompt
         input_text = font.render(game.input_text, True, BLACK)
-        screen.blit(input_text, (WIDTH//2 - 50, HEIGHT - 60))
+        screen.blit(input_text, (WIDTH//2 - 50, HEIGHT - 60))  # desce o input
+
 
     if game.game_over:
         overlay = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
