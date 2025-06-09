@@ -32,11 +32,28 @@ FUNCTIONS = [
         "name": "Senoide",
         "formula": "f(x) = 50·sen(0.01x) + 0.001x² + 300",
         "f": lambda x: 50 * math.sin(0.01 * x) + 0.001 * x**2 + 300,
-        "df": lambda x: 50 * 0.01 * math.cos(0.01 * x) + 0.002 * x,
+        "df": lambda x: 0.5 * math.cos(0.01 * x) + 0.002 * x,
+        "range": (0, 1000),
+        "checkpoints": 4
+    },
+    {
+        "name": "Polinomial",
+        "formula": "f(x) = -0.01x⁴ + 0.2x³ - x² + 5x + 200",
+        "f": lambda x: -0.01*x**4 + 0.2*x**3 - x**2 + 5*x + 200,
+        "df": lambda x: -0.04*x**3 + 0.6*x**2 - 2*x + 5,
+        "range": (0, 1000),
+        "checkpoints": 5
+    },
+    {
+        "name": "Logística",
+        "formula": "f(x) = 400 / (1 + e^(-0.01(x - 500)))",
+        "f": lambda x: 400 / (1 + math.exp(-0.01*(x - 500))),
+        "df": lambda x: (4 * math.exp(-0.01*(x - 500))) / (1 + math.exp(-0.01*(x - 500)))**2,
         "range": (0, 1000),
         "checkpoints": 4
     }
 ]
+
 
 # =============================================
 # FUNÇÕES DE DESENHO E LÓGICA
@@ -79,7 +96,7 @@ class GameState:
 
     def reset(self):
         global current_func, f, df, FUNC_RANGE, TOTAL_CHECKPOINTS, TRACK_LENGTH
-        current_func = FUNCTIONS[0]
+        current_func = random.choice(FUNCTIONS)
         f = current_func["f"]
         df = current_func["df"]
         FUNC_RANGE = current_func["range"]
@@ -111,7 +128,7 @@ class GameState:
     def check_answer(self):
         try:
             user_slope = float(self.input_text)
-            real_slope = df(self.car_x)
+            real_slope = df(self.next_checkpoint)
             error = abs(user_slope - real_slope)
 
             if error < 0.5:
@@ -167,11 +184,13 @@ while True:
         game.camera_y = car_y - HEIGHT // 2
 
         if game.car_x >= game.next_checkpoint - 10 and not game.input_mode:
+            game.car_x = game.next_checkpoint  
             game.speed = 0
             game.waiting_at_checkpoint = True
             game.input_mode = True
             game.message = f"Qual a derivada em x ≈ {int(game.next_checkpoint)}?"
             game.message_time = pygame.time.get_ticks()
+
 
         if game.car_x >= FUNC_RANGE[1] - 50:
             game.car_x = FUNC_RANGE[1] - 50
