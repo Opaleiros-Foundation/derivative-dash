@@ -1,6 +1,4 @@
-Aqui está o arquivo README.md para o projeto Derivative Dash:
 
-```markdown
 # Derivative Dash - Jogo Educativo de Cálculo
 
 Um jogo educativo que ensina conceitos de cálculo diferencial de forma interativa, focando em derivadas de primeira e segunda ordem.
