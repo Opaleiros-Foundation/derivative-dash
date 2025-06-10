@@ -1,9 +1,14 @@
 import math
+from function_generator import get_functions
 
 # =============================================
 # BIBLIOTECA DE FUNÇÕES PARA O JOGO
 # =============================================
-FUNCTIONS = [
+# Importa as funções do gerador
+FUNCTIONS = get_functions(include_static=True, generated_count=3, difficulty_range=(1, 3))
+
+"""
+STATIC_FUNCTIONS = [
     {
         "name": "Senoide",
         "formula": "f(x) = 50·sen(0.01x) + 0.001x² + 300",
@@ -32,3 +37,5 @@ FUNCTIONS = [
         "checkpoints": 4
     }
 ]
+FUNCTIONS = STATIC_FUNCTIONS
+"""
