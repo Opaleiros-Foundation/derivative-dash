@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <!-- Definições simplificadas -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3498db" />
+      <stop offset="100%" stop-color="#8e44ad" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Fundo circular com gradiente -->
+  <circle cx="128" cy="128" r="128" fill="url(#bgGradient)" />
+
+  <!-- Plano cartesiano simplificado -->
+  <rect x="48" y="48" width="160" height="160" fill="#1a2738" rx="10" />
+
+  <!-- Apenas linhas principais do plano cartesiano -->
+  <line x1="48" y1="128" x2="208" y2="128" stroke="#ffffff" stroke-width="2" stroke-opacity="0.7" />
+  <line x1="128" y1="48" x2="128" y2="208" stroke="#ffffff" stroke-width="2" stroke-opacity="0.7" />
+
+  <!-- Função matemática simplificada -->
+  <path d="M 48,128 
+           C 80,90 110,166 145,128 
+           C 180,90 208,128 208,128" 
+        fill="none" stroke="#2ecc71" stroke-width="6" stroke-linecap="round" filter="url(#glow)" />
+
+  <!-- Símbolo de derivada (d/dx) destacado -->
+  <text x="70" y="90" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#e74c3c" filter="url(#glow)">
+    d/dx
+  </text>
+
+  <!-- Marcador da derivada simplificado -->
+  <circle cx="145" cy="128" r="6" fill="#e74c3c" />
+  <line x1="145" y1="128" x2="180" y2="100" stroke="#e74c3c" stroke-width="3" />
+
+  <!-- Texto "DD" mais destacado -->
+  <text x="128" y="188" font-family="Arial Black, sans-serif" font-size="60" font-weight="900" fill="#ffffff" text-anchor="middle">
+    DD
+  </text>
+</svg>
