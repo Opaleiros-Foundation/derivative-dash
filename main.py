@@ -3,79 +3,60 @@ import sys
 import math
 import os
 from config import *
-from game import GameState
-from renderer import draw_track, draw_checkpoints, draw_car, draw_hud
+from game.game_state import GameState
+from ui.renderer import draw_track, draw_checkpoints, draw_car, draw_hud, create_game_icon
+from ui.menu import run_menu
+from ui.game_screen import GameScreen
+from utils.function_generator import get_functions
 
 # Inicialização do pygame
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Derivative Dash - Cálculo 2 (1ª e 2ª derivadas)")
 
-# Criando um ícone estilizado similar ao SVG, mas gerado pelo Pygame
-def create_game_icon():
-    # Criar uma superfície 32x32 com canal alpha
-    icon = pygame.Surface((32, 32), pygame.SRCALPHA)
-    
-    # Gradiente de fundo circular (simplificado)
-    pygame.draw.circle(icon, BLUE, (16, 16), 16)
-    
-    # Simular uma curva/gráfico - similar ao arquivo SVG
-    points = [(8, 16), (12, 12), (16, 16), (20, 20), (24, 16)]
-    pygame.draw.lines(icon, GREEN, False, points, 2)
-    
-    # Simulação do carro
-    pygame.draw.rect(icon, RED, (14, 13, 8, 4), border_radius=1)
-    
-    # Pequenas rodas
-    pygame.draw.circle(icon, BLACK, (15, 18), 1)
-    pygame.draw.circle(icon, BLACK, (21, 18), 1)
-    
-    return icon
-
 # Definir o ícone da janela
 pygame.display.set_icon(create_game_icon())
 
+def run_game(difficulty=2):
+    """Executa o loop principal do jogo"""
+    # Cria um novo jogo com a dificuldade especificada
+    game = GameState(difficulty)
+    
+    # Configurações adicionais baseadas na dificuldade
+    # (as principais configurações são definidas na classe GameState)
+    generated_count = 3  # Número de funções geradas
+    if difficulty == 1:  # Fácil
+        difficulty_range = (1, 1)  # Funções mais simples
+    elif difficulty == 2:  # Normal
+        difficulty_range = (1, 2)
+    else:  # Difícil
+        difficulty_range = (2, 3)  # Funções mais complexas
+    
+    # Carrega funções de acordo com a dificuldade
+    from functions import FUNCTIONS
+    
+    # Cria e executa a tela do jogo
+    game_screen = GameScreen(screen)
+    game_screen.run(game)
+
 def main():
-    game = GameState()
-    clock = pygame.time.Clock()
-
+    """Função principal que gerencia o fluxo entre menu e jogo"""
+    in_menu = True
+    
     while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if not game.game_over and game.input_mode:
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RETURN:
-                        game.check_answer()
-                    elif event.key == pygame.K_BACKSPACE:
-                        game.input_text = game.input_text[:-1]
-                    else:
-                        game.input_text += event.unicode
-
-        screen.fill(WHITE)
-        
-        # Atualiza estado do jogo
-        game.update()
-        
-        # Desenha elementos do jogo
-        draw_track(screen, game, game.f, game.FUNC_RANGE, game.TRACK_LENGTH)
-        draw_checkpoints(screen, game, game.f)
-        
-        car_y = game.f(game.car_x)
-        draw_car(screen, game, car_y, game.df)
-        
-        # Interface do usuário
-        draw_hud(screen, game, game.current_func, game.TOTAL_CHECKPOINTS)
-        
-        # Verifica tecla R para reiniciar após game over
-        if game.game_over:
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_r]:
-                game.reset()
-
-        pygame.display.flip()
-        clock.tick(60)
+        if in_menu:
+            # Executa o menu e recebe as configurações escolhidas
+            menu_result = run_menu(screen)
+            
+            if menu_result and menu_result["action"] == "start_game":
+                # Inicia o jogo com a dificuldade selecionada
+                difficulty = menu_result["difficulty"]
+                in_menu = False
+                run_game(difficulty)
+                in_menu = True  # Volta para o menu quando o jogo terminar
+        else:
+            # Caso algo dê errado, volta para o menu
+            in_menu = True
 
 if __name__ == "__main__":
     main()

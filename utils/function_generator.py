@@ -358,35 +358,34 @@ STATIC_FUNCTIONS = [
     },
     {
         "name": "Polinômio Cúbico",
-        "formula": "f(x) = 0.00001x³ - 0.015x² + 5x + 300",
-        "f": lambda x: 0.00001 * x**3 - 0.015 * x**2 + 5 * x + 300,
-        "df": lambda x: 0.00003 * x**2 - 0.03 * x + 5,
-        "d2f": lambda x: 0.00006 * x - 0.03,
+        "formula": "f(x) = 0.0001x³ - 0.08x² + 20x + 100",
+        "f": lambda x: 0.0001 * x**3 - 0.08 * x**2 + 20 * x + 100,
+        "df": lambda x: 0.0003 * x**2 - 0.16 * x + 20,
+        "d2f": lambda x: 0.0006 * x - 0.16,
         "range": (0, 1000),
         "checkpoints": 4
     }
 ]
 
-# Função para combinar funções estáticas com funções geradas dinamicamente
 def get_functions(include_static=True, generated_count=3, difficulty_range=(1, 3)):
     """
-    Retorna uma lista de funções para o jogo.
+    Obtém um conjunto de funções para o jogo, combinando funções estáticas e geradas.
     
     Args:
-        include_static (bool): Se deve incluir as funções estáticas originais
-        generated_count (int): Número de funções geradas aleatoriamente
+        include_static (bool): Se deve incluir as funções estáticas predefinidas
+        generated_count (int): Número de funções aleatórias a serem geradas
         difficulty_range (tuple): Intervalo de dificuldade para as funções geradas
         
     Returns:
-        list: Lista de funções para o jogo
+        list: Lista de funções
     """
     functions = []
     
-    # Inclui funções estáticas originais
+    # Adiciona funções estáticas
     if include_static:
         functions.extend(STATIC_FUNCTIONS)
     
-    # Adiciona funções geradas dinamicamente
+    # Adiciona funções geradas aleatoriamente
     if generated_count > 0:
         generator = FunctionGenerator()
         functions.extend(generator.generate_function_set(generated_count, difficulty_range))
@@ -394,9 +393,8 @@ def get_functions(include_static=True, generated_count=3, difficulty_range=(1, 3
     return functions
 
 
-# Exemplo de uso
+# Teste do gerador quando executado diretamente
 if __name__ == "__main__":
-    # Testa o gerador
     generator = FunctionGenerator()
     
     print("Função Polinomial:")

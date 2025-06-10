@@ -1,5 +1,5 @@
 import math
-from function_generator import get_functions
+from utils.function_generator import get_functions
 
 # =============================================
 # BIBLIOTECA DE FUNÇÕES PARA O JOGO
